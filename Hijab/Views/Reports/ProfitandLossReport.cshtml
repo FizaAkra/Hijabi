@@ -1,0 +1,33 @@
+﻿@model IEnumerable <Hijab.Models.Order>
+@{
+   
+    ViewBag.Title = "PurchaseReport";
+}
+<center>
+    <h2>Profit & Loss Report</h2>
+</center>
+<table class="table table-bordered table-hover" >
+    <tr style="background-color:indianred;color:white">
+        <th>Order Number</th>
+        <th>Order Date</th>
+        <th>Customer Nam</th>
+        <th>Order Sale Cost</th>
+        <th>Order Purchase Cost</th>
+        <th>Gross Profit & Loss</th>
+        <th>Action</th>
+    </tr>
+    @foreach(var o in Model)
+            {
+<tr>
+    <td align="center">@o.ORDER_ID</td>
+    <td align="center">@DateTime.Parse(o.ORDER_DATE.ToString()).ToLongDateString()</td>
+    <td align="center">@o.ORDER_NAME</td>
+    <td align="center">@o.OrderDetails.Sum(x=>x.SALE_PRICE*x.QUANTITY)</td>
+    <td align="center">@o.OrderDetails.Sum(x=>x.PURCHASE_PRICE*x.QUANTITY)</td>
+    <td align="center">@(o.OrderDetails.Sum(x => x.SALE_PRICE * x.QUANTITY) - o.OrderDetails.Sum(x => x.PURCHASE_PRICE * x.QUANTITY))</td>
+    <td align="center"><a href="@Url.Action("Invoice","Reports",new { id = o.ORDER_ID })"class="btn btn-danger">View Invoice</a></td>
+</tr>
+            }
+
+</table>
+
